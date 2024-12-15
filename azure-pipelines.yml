@@ -1,13 +1,14 @@
+trigger:
+  - master
+
 pool:
   name: 'default'
 
 steps:
-- task: Docker@2
-  inputs:
-    containerRegistry: 'meritopkracr'
-    repository: 'SalesBookWEB'
-    command: 'buildAndPush'
-    Dockerfile: '**/SalesBookWEB/Dockerfile'
-    tags: |
-      $(Build.BuildId)
-      latest
+  - task: DockerCompose@0
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerComposeFile: '**/docker-compose.yml'
+      action: 'Run a Docker Compose command'
+      dockerComposeCommand: 'up --abort-on-container-exit'
+    displayName: 'Run Hello in Busybox' 
